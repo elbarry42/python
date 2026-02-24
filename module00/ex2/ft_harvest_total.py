@@ -1,14 +1,6 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    ft_harvest_total.py                                :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: elbarry <elbarry@student.42lyon.fr>        +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2026/01/29 12:03:01 by elbarry           #+#    #+#              #
-#    Updated: 2026/02/05 14:25:11 by elbarry          ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
-def	ft_harvest_total() -> None :
-    
+def ft_harvest_total() -> None:
+    x = int(input("Day 1 harvest: "))
+    y = int(input("Day 2 harvest: "))
+    z = int(input("Day 3 harvest: "))
+    total = x + y + z
+    print("Total harvest:", total)
