@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-
 class Plant:
     def __init__(self, name: str, height: int) -> None:
         self.name: str = name
@@ -24,8 +23,8 @@ class FloweringPlant(Plant):
 
     def get_info(self) -> str:
         bloom_status = "blooming" if self.is_blooming else "not blooming"
-        return f"{self.name}: {self.height}cm,"
-        f"{self.color} flowers ({bloom_status})"
+        return (f"{self.name}: {self.height}cm,"
+                f"{self.color} flowers ({bloom_status})")
 
 
 class PrizeFlower(FloweringPlant):
