@@ -17,15 +17,14 @@ def water_plants(plant_list) -> None:
 def test_watering_system() -> None:
     print("=== Garden Watering System ===")
 
-    print("Testing normal watering...")
+    print("\nTesting normal watering...")
     water_plants(["tomato", "lettuce", "carrots"])
     print("Watering completed successfully!")
 
     print("\nTesting with error...")
     water_plants(["tomato", None, "carrots"])
 
-    print()
-    print("Cleanup always happens, even with errors!")
+    print("\nCleanup always happens, even with errors!")
 
 
 if __name__ == "__main__":

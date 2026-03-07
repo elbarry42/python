@@ -1,35 +1,30 @@
 def garden_operations() -> None:
-    print()
-    print("Testing ValueError...")
+    print("\nTesting ValueError...")
     try:
         int("abc")
     except ValueError:
         print("Caught ValueError: invalid literal for int()")
 
-    print()
-    print("Testing ZeroDivisionError...")
+    print("\nTesting ZeroDivisionError...")
     try:
         10 / 0
     except ZeroDivisionError:
         print("Caught ZeroDivisionError: division by zero")
 
-    print()
-    print("Testing FileNotFoundError...")
+    print("\nTesting FileNotFoundError...")
     try:
         open("missing.txt")
     except FileNotFoundError:
         print("Caught FileNotFoundError: No such file 'missing.txt'")
 
-    print()
-    print("Testing KeyError...")
+    print("\nTesting KeyError...")
     try:
         plants = {"tomato": 10}
         print(plants["lettuce"])
     except KeyError:
         print("Caught KeyError: 'lettuce'")
 
-    print()
-    print("Testing multiple errors together...")
+    print("\nTesting multiple errors together...")
     try:
         int("abc")
     except (ValueError, TypeError):
