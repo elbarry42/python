@@ -6,7 +6,7 @@ print("=== Player Score Analytics ===")
 
 if len(sys.argv) == 1:
     print(
-        "No scores provided. Usage:"
+        "No scores provided. Usage: "
         "python3 ft_score_analytics.py <score1> <score2> ..."
     )
     sys.exit()
@@ -17,7 +17,7 @@ for arg in sys.argv[1:]:
     try:
         score = int(arg)
         scores.append(score)
-    except:
+    except ValueError:
         print("Invalid score ignored:", arg)
 
 if len(scores) == 0:

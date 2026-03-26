@@ -1,32 +1,71 @@
 #!/usr/bin/env python3
 
+import random
+
 print("=== Achievement Tracker System ===")
 
-alice = {"first_kill", "level_10", "treasure_hunter", "speed_demon"}
-bob = {"first_kill", "level_10", "boss_slayer", "collector"}
-charlie = {"level_10", "treasure_hunter", "boss_slayer", "speed_demon", "perfectionist"}
+all_achievements = [
+    "First Steps",
+    "Treasure Hunter",
+    "Boss Slayer",
+    "Master Explorer",
+    "Collector Supreme",
+    "Speed Runner",
+    "Strategist",
+    "Untouchable",
+    "Survivor",
+    "Sharp Mind",
+    "Unstoppable",
+    "World Savior",
+    "Crafting Genius",
+    "Hidden Path Finder",
+]
 
-print("\nPlayer alice achievements:", alice)
-print("Player bob achievements:", bob)
-print("Player charlie achievements:", charlie)
 
-print("\n=== Achievement Analytics ===")
+def gen_player_achievements() -> set[str]:
+    count = random.randint(3, len(all_achievements))
+    chosen = random.sample(all_achievements, count)
+    return set(chosen)
 
-all_achievements = alice.union(bob).union(charlie)
-print("All unique achievements:", all_achievements)
-print("Total unique achievements:", len(all_achievements))
 
-common = alice.intersection(bob).intersection(charlie)
-print("\nCommon to all players:", common)
+players = {
+    "Alice": gen_player_achievements(),
+    "Bob": gen_player_achievements(),
+    "Charlie": gen_player_achievements(),
+    "Dylan": gen_player_achievements(),
+}
 
-rare = {"collector", "perfectionist"}
-print("Rare achievements (1 player):", rare)
+print()
+for name, achievements in players.items():
+    print(f"Player {name}: {achievements}")
 
-alice_bob_common = alice.intersection(bob)
-print("\nAlice vs Bob common:", alice_bob_common)
+all_sets = players.values()
 
-alice_unique = alice.difference(bob)
-print("Alice unique:", alice_unique)
+all_unique: set[str] = set()
+for s in all_sets:
+    all_unique = all_unique.union(s)
 
-bob_unique = bob.difference(alice)
-print("Bob unique:", bob_unique)
+print("\nAll distinct achievements:", all_unique)
+
+common = set(all_achievements)
+
+for s in players.values():
+    common = common.intersection(s)
+
+print("\nCommon achievements:", common)
+
+print()
+for name, achievements in players.items():
+    others: set[str] = set()
+
+    for n, a in players.items():
+        if n != name:
+            others = others.union(a)
+
+    unique = achievements.difference(others)
+    print(f"Only {name} has: {unique}")
+
+print()
+for name, achievements in players.items():
+    missing = set(all_achievements).difference(achievements)
+    print(f"{name} is missing: {missing}")

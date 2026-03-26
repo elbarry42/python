@@ -4,65 +4,50 @@ import sys
 
 print("=== Inventory System Analysis ===")
 
-inventory = dict()
+inventory = {}
 
-# Parse command line arguments
 for arg in sys.argv[1:]:
-    parts = arg.split(":")
-    item = parts[0]
-    quantity = int(parts[1])
-    inventory.update({item: quantity})
 
-# Total items
-total_items = sum(inventory.values())
-unique_items = len(inventory)
+    if ":" not in arg:
+        print(f"Error - invalid parameter '{arg}'")
+        continue
 
-print("Total items in inventory:", total_items)
-print("Unique item types:", unique_items)
+    item, value = arg.split(":", 1)
 
-print("\n=== Current Inventory ===")
+    if item in inventory:
+        print(f"Redundant item '{item}' - discarding")
+        continue
 
-# Display inventory with percentage
-for item, quantity in inventory.items():
-    percentage = (quantity / total_items) * 100
-    print(f"{item}: {quantity} units ({percentage:.1f}%)")
+    try:
+        quantity = int(value)
+    except ValueError as e:
+        print(f"Quantity error for '{item}': {e}")
+        continue
 
-print("\n=== Inventory Statistics ===")
+    inventory[item] = quantity
 
-# Most and least abundant
-most_item = max(inventory, key=inventory.get)
-least_item = min(inventory, key=inventory.get)
 
-print(f"Most abundant: {most_item} ({inventory.get(most_item)} units)")
-print(f"Least abundant: {least_item} ({inventory.get(least_item)} units)")
+if len(inventory) == 0:
+    print("No valid items provided.")
+    sys.exit()
 
-print("\n=== Item Categories ===")
+print(f"Got inventory: {inventory}")
 
-moderate = dict()
-scarce = dict()
+items = list(inventory.keys())
+print(f"Item list: {items}")
 
-for item, quantity in inventory.items():
-    if quantity >= 5:
-        moderate[item] = quantity
-    else:
-        scarce[item] = quantity
-
-print("Moderate:", moderate)
-print("Scarce:", scarce)
-
-print("\n=== Management Suggestions ===")
-
-restock = []
+total = sum(inventory.values())
+print(f"Total quantity of the {len(items)} items: {total}")
 
 for item, quantity in inventory.items():
-    if quantity <= 1:
-        restock.append(item)
+    percent = (quantity / total) * 100
+    print(f"Item {item} represents {percent:.1f}%")
 
-print("Restock needed:", ", ".join(restock))
+most = max(inventory, key=lambda k: inventory[k])
+least = min(inventory, key=lambda k: inventory[k])
 
-print("\n=== Dictionary Properties Demo ===")
+print(f"Item most abundant: {most} with quantity {inventory[most]}")
+print(f"Item least abundant: {least} with quantity {inventory[least]}")
 
-print("Dictionary keys:", ", ".join(inventory.keys()))
-print("Dictionary values:", ", ".join(str(v) for v in inventory.values()))
-
-print("Sample lookup - 'sword' in inventory:", "sword" in inventory)
+inventory.update({"magic_item": 1})
+print(f"Updated inventory: {inventory}")
