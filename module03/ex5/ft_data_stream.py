@@ -11,14 +11,14 @@ actions = [
 ]
 
 
-def event_stream() -> Generator[Tuple[str, str], None, None]:
+def get_event() -> Generator[Tuple[str, str], None, None]:
     for _ in range(1000):
         player = random.choice(players)
         action = random.choice(actions)
         yield player, action
 
 
-for i, (player, action) in enumerate(event_stream()):
+for i, (player, action) in enumerate(get_event()):
     print(f"Event {i}: Player {player} did action {action}")
 
 event_list: list[tuple[str, str]] = []
