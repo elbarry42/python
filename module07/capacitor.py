@@ -19,7 +19,7 @@ def main():
     print(evolved.attack())
     print(evolved.heal())
 
-    print("Testing Creature with transform capability")
+    print("\nTesting Creature with transform capability")
 
     transform_factory = TransformCreatureFactory()
 
