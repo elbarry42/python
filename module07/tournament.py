@@ -35,8 +35,23 @@ def battle(opponents):
                 return
 
 
+def format_opponents(opponents):
+    names = []
+
+    for factory, strategy in opponents:
+        creature = factory.create_base()
+        cname = creature.name
+
+        sname = strategy.__class__.__name__.replace("Strategy", "")
+
+        names.append(f"({cname}+{sname})")
+
+    return "[ " + ", ".join(names) + " ]"
+
+
 def main():
     flame = FlameFactory()
+    aqua = AquaFactory()
     healing = HealingCreatureFactory()
     transform = TransformCreatureFactory()
 
@@ -44,24 +59,33 @@ def main():
     defensive = DefensiveStrategy()
     aggressive = AggressiveStrategy()
 
+    # Tournament 0
     print("Tournament 0 (basic)")
-    battle([
+    opponents = [
         (flame, normal),
         (healing, defensive),
-    ])
+    ]
+    print(format_opponents(opponents))
+    battle(opponents)
 
+    # Tournament 1
     print("\nTournament 1 (error)")
-    battle([
-        (flame, aggressive),  # ❌ erreur
+    opponents = [
+        (flame, aggressive),
         (healing, defensive),
-    ])
+    ]
+    print(format_opponents(opponents))
+    battle(opponents)
 
+    # Tournament 2
     print("\nTournament 2 (multiple)")
-    battle([
-        (AquaFactory(), normal),
+    opponents = [
+        (aqua, normal),
         (healing, defensive),
         (transform, aggressive),
-    ])
+    ]
+    print(format_opponents(opponents))
+    battle(opponents)
 
 
 if __name__ == "__main__":
