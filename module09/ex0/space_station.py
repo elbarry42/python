@@ -26,7 +26,9 @@ def main() -> None:
         crew_size=6,
         power_level=85.5,
         oxygen_level=92.3,
-        last_maintenance="2024-01-01T10:00:00",
+        last_maintenance=datetime.fromisoformat(
+            "2024-01-01T10:00:00"
+        ),
         notes="All systems nominal"
     )
 
@@ -52,7 +54,9 @@ def main() -> None:
             crew_size=50,
             power_level=110.0,
             oxygen_level=50.0,
-            last_maintenance="2024-01-01T10:00:00"
+            last_maintenance=datetime.fromisoformat(
+                "2024-01-01T10:00:00"
+            ),
         )
     except Exception as error:
         print("Expected validation error:")
