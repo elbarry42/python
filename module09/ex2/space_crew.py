@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 
-from datetime import datetime
-from enum import Enum
-from typing import List
-
 from pydantic import BaseModel, Field, model_validator
+from datetime import datetime
+from typing import List
+from enum import Enum
 
 
 class Rank(str, Enum):
@@ -37,11 +36,9 @@ class SpaceMission(BaseModel):
 
     @model_validator(mode="after")
     def validate_mission(self) -> "SpaceMission":
-        # 1. ID doit commencer par M
         if not self.mission_id.startswith("M"):
             raise ValueError("Mission ID must start with 'M'")
 
-        # 2. au moins un captain ou commander
         has_leader = any(
             member.rank in (Rank.captain, Rank.commander)
             for member in self.crew
@@ -51,7 +48,6 @@ class SpaceMission(BaseModel):
                 "Mission must have at least one Captain or Commander"
             )
 
-        # 3. missions longues → 50% expérimentés
         if self.duration_days > 365:
             experienced = [
                 m for m in self.crew
@@ -59,10 +55,9 @@ class SpaceMission(BaseModel):
             ]
             if len(experienced) < len(self.crew) / 2:
                 raise ValueError(
-                    "Long missions need at least 50% experienced crew"
+                    "Not enough experienced crew"
                 )
 
-        # 4. tous actifs
         if any(not m.is_active for m in self.crew):
             raise ValueError(
                 "All crew members must be active"
@@ -75,19 +70,18 @@ def main() -> None:
     print("Space Mission Crew Validation")
     print("=" * 40)
 
-    # ✅ VALID
     mission = SpaceMission(
         mission_id="M2024_MARS",
         mission_name="Mars Colony Establishment",
         destination="Mars",
-        launch_date="2024-06-01T10:00:00",
+        launch_date=datetime.fromisoformat("2024-06-01T10:00:00"),
         duration_days=900,
         budget_millions=2500.0,
         crew=[
             CrewMember(
                 member_id="C001",
                 name="Sarah Connor",
-                rank="commander",
+                rank=Rank.commander,
                 age=40,
                 specialization="Command",
                 years_experience=15,
@@ -95,7 +89,7 @@ def main() -> None:
             CrewMember(
                 member_id="C002",
                 name="John Smith",
-                rank="lieutenant",
+                rank=Rank.lieutenant,
                 age=35,
                 specialization="Navigation",
                 years_experience=8,
@@ -103,7 +97,7 @@ def main() -> None:
             CrewMember(
                 member_id="C003",
                 name="Alice Johnson",
-                rank="officer",
+                rank=Rank.officer,
                 age=30,
                 specialization="Engineering",
                 years_experience=6,
@@ -128,20 +122,19 @@ def main() -> None:
 
     print("=" * 40)
 
-    # ❌ INVALID (pas de commander)
     try:
         SpaceMission(
             mission_id="M2024_BAD",
             mission_name="Bad Mission",
             destination="Mars",
-            launch_date="2024-06-01T10:00:00",
+            launch_date=datetime.fromisoformat("2024-06-01T10:00:00"),
             duration_days=100,
             budget_millions=100.0,
             crew=[
                 CrewMember(
                     member_id="C004",
                     name="Bob",
-                    rank="officer",
+                    rank=Rank.officer,
                     age=25,
                     specialization="Tech",
                     years_experience=1,

@@ -29,27 +29,23 @@ class AlienContact(BaseModel):
 
     @model_validator(mode="after")
     def validate_business_rules(self) -> "AlienContact":
-        # 1. ID doit commencer par AC
         if not self.contact_id.startswith("AC"):
             raise ValueError(
                 "Contact ID must start with 'AC'"
             )
 
-        # 2. Physical → must be verified
         if self.contact_type == ContactType.physical:
             if not self.is_verified:
                 raise ValueError(
                     "Physical contact must be verified"
                 )
 
-        # 3. Telepathic → ≥ 3 witnesses
         if self.contact_type == ContactType.telepathic:
             if self.witness_count < 3:
                 raise ValueError(
                     "Telepathic contact requires at least 3 witnesses"
                 )
 
-        # 4. Signal > 7 → message obligatoire
         if self.signal_strength > 7.0:
             if not self.message_received:
                 raise ValueError(
@@ -63,12 +59,11 @@ def main() -> None:
     print("Alien Contact Log Validation")
     print("=" * 40)
 
-    # ✅ VALID
     valid_contact = AlienContact(
         contact_id="AC_2024_001",
-        timestamp="2024-01-01T12:00:00",
+        timestamp=datetime.fromisoformat("2024-01-01T12:00:00"),
         location="Area 51, Nevada",
-        contact_type="radio",
+        contact_type=ContactType.radio,
         signal_strength=8.5,
         duration_minutes=45,
         witness_count=5,
@@ -87,16 +82,15 @@ def main() -> None:
 
     print("=" * 40)
 
-    # ❌ INVALID
     try:
         AlienContact(
             contact_id="AC_2024_002",
-            timestamp="2024-01-01T12:00:00",
+            timestamp=datetime.fromisoformat("2024-01-01T12:00:00"),
             location="Unknown",
-            contact_type="telepathic",
+            contact_type=ContactType.telepathic,
             signal_strength=5.0,
             duration_minutes=30,
-            witness_count=1,  # erreur
+            witness_count=1,
         )
     except Exception as error:
         print("Expected validation error:")
